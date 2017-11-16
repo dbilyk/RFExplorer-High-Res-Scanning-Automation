@@ -39,14 +39,18 @@ namespace RFExplorerSimpleClient
         #endregion
         private double freqSpan;
 
+        public struct DataPoint
+        {
+            public double freq;
+            public double amp;
+        }
+
         #region Main Form handling
         public SimpleMainForm()
         {
             InitializeComponent();
 
             m_objRFE = new RFECommunicator(true);
-            m_objRFE.PortClosedEvent += new EventHandler(OnRFE_PortClosed);
-            m_objRFE.ReportInfoAddedEvent += new EventHandler(OnRFE_ReportLog);
             m_objRFE.ReceivedConfigurationDataEvent += new EventHandler(OnRFE_ReceivedConfigData);
             m_objRFE.UpdateDataEvent += new EventHandler(OnRFE_UpdateData);
             CenterFreq.KeyDown += new KeyEventHandler(OnCenterFreqChanged);
@@ -75,21 +79,36 @@ namespace RFExplorerSimpleClient
         #region RFExplorer Events
         private void OnRFE_ReceivedConfigData(object sender, EventArgs e)
         {
-            ReportDebug(m_sRFEReceivedString);
             m_objRFE.SweepData.CleanAll(); //we do not want mixed data sweep values
         }
+
 
         private void OnRFE_UpdateData(object sender, EventArgs e)
         {
             labelSweeps.Text = "Sweeps: " + m_objRFE.SweepData.Count.ToString();
 
+
             RFESweepData objData = m_objRFE.SweepData.GetData(m_objRFE.SweepData.Count - 1);
             if (objData != null)
             {
-                UInt16 nPeak = objData.GetPeakStep();
+                //UInt16 nPeak = objData.GetPeakStep();
+                //labelFrequency.Text = objData.GetFrequencyMHZ(nPeak).ToString("f3") + " MHZ";
+                //labelAmplitude.Text = objData.GetAmplitudeDBM(nPeak).ToString("f2") + " dBm";
 
-                labelFrequency.Text = objData.GetFrequencyMHZ(nPeak).ToString("f3") + " MHZ";
-                labelAmplitude.Text = objData.GetAmplitudeDBM(nPeak).ToString("f2") + " dBm";
+
+                ScanPlot.Series[0].Points.Clear();
+                List<DataPoint> ScanData = new List<DataPoint>();
+                for(ushort i = 0; i<= objData.TotalSteps - 1; i++)
+                {
+                    DataPoint point = new DataPoint();
+                    point.freq = objData.GetFrequencyMHZ(i);
+                    point.amp = objData.GetAmplitudeDBM(i);
+                    ScanData.Add(point);
+                    ScanPlot.Series[0].Points.AddXY(point.freq,point.amp);
+                    
+                }
+                
+
             }
         }
 
@@ -119,41 +138,7 @@ namespace RFExplorerSimpleClient
                 }
             }
         }
-
-        private void OnRFE_ReportLog(object sender, EventArgs e)
-        {
-            EventReportInfo objArg = (EventReportInfo)e;
-            ReportDebug(objArg.Data);
-        }
-
-        private void ReportDebug(string sLine)
-        {
-            if (!m_edRFEReportLog.IsDisposed && !m_chkDebug.IsDisposed && m_chkDebug.Checked)
-            {
-                if (sLine.Length > 0)
-                    m_edRFEReportLog.AppendText(sLine);
-                m_edRFEReportLog.AppendText(Environment.NewLine);
-            }
-        }
-
-        private void OnRFE_PortClosed(object sender, EventArgs e)
-        {
-            ReportDebug("RF Explorer PortClosed");
-        }
-
-        private void m_chkDebug_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_chkDebug.Checked)
-            {
-                this.Size = new Size(this.Size.Width, 400);
-                m_edRFEReportLog.Visible = true;
-            }
-            else
-            {
-                this.Size = new Size(this.Size.Width, 187);
-                m_edRFEReportLog.Visible = false;
-            }
-        }
+       
         #endregion
 
         #region RF Explorer handling

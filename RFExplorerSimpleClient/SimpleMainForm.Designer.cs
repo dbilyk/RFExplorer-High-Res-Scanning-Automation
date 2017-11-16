@@ -48,7 +48,6 @@ namespace RFExplorerSimpleClient
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelAmplitude = new System.Windows.Forms.Label();
@@ -64,10 +63,10 @@ namespace RFExplorerSimpleClient
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Span = new System.Windows.Forms.TextBox();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.ScanPlot = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScanPlot)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -213,28 +212,26 @@ namespace RFExplorerSimpleClient
             this.Span.TabIndex = 65;
             this.Span.Text = "10";
             // 
-            // chart1
+            // ScanPlot
             // 
             chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(278, 13);
-            this.chart1.Name = "chart1";
+            this.ScanPlot.ChartAreas.Add(chartArea1);
+            this.ScanPlot.Location = new System.Drawing.Point(278, 13);
+            this.ScanPlot.Name = "ScanPlot";
             series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(649, 398);
-            this.chart1.TabIndex = 67;
-            this.chart1.Text = "chart1";
+            this.ScanPlot.Series.Add(series1);
+            this.ScanPlot.Size = new System.Drawing.Size(649, 398);
+            this.ScanPlot.TabIndex = 67;
+            this.ScanPlot.Text = "chart1";
             // 
             // SimpleMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(939, 423);
-            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.ScanPlot);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Span);
             this.Controls.Add(this.label1);
@@ -249,7 +246,7 @@ namespace RFExplorerSimpleClient
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScanPlot)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,7 +270,7 @@ namespace RFExplorerSimpleClient
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox Span;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart ScanPlot;
     }
 }
 
