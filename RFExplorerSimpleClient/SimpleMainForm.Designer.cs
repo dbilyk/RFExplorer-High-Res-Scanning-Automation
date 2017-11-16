@@ -47,8 +47,10 @@ namespace RFExplorerSimpleClient
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelAmplitude = new System.Windows.Forms.Label();
             this.labelFrequency = new System.Windows.Forms.Label();
@@ -199,9 +201,9 @@ namespace RFExplorerSimpleClient
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(130, 366);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
+            this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 66;
-            this.label2.Text = "Center Freq";
+            this.label2.Text = "Freq Span";
             this.label2.Visible = false;
             // 
             // Span
@@ -214,14 +216,27 @@ namespace RFExplorerSimpleClient
             // 
             // ScanPlot
             // 
-            chartArea1.Name = "ChartArea1";
-            this.ScanPlot.ChartAreas.Add(chartArea1);
+            this.ScanPlot.BorderSkin.BorderColor = System.Drawing.Color.Transparent;
+            chartArea2.Name = "ChartArea1";
+            this.ScanPlot.ChartAreas.Add(chartArea2);
+            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend2.IsTextAutoFit = false;
+            legend2.Name = "Legend1";
+            this.ScanPlot.Legends.Add(legend2);
             this.ScanPlot.Location = new System.Drawing.Point(278, 13);
+            this.ScanPlot.Margin = new System.Windows.Forms.Padding(1);
             this.ScanPlot.Name = "ScanPlot";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Name = "Series1";
-            this.ScanPlot.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Realtime";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Legend = "Legend1";
+            series4.Name = "Peak Hold";
+            this.ScanPlot.Series.Add(series3);
+            this.ScanPlot.Series.Add(series4);
             this.ScanPlot.Size = new System.Drawing.Size(649, 398);
             this.ScanPlot.TabIndex = 67;
             this.ScanPlot.Text = "chart1";

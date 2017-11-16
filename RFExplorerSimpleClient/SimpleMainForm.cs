@@ -38,6 +38,8 @@ namespace RFExplorerSimpleClient
         RFECommunicator m_objRFE;
         #endregion
         private double freqSpan;
+        private List<DataPoint> peakHoldData = new List<DataPoint>();
+        private List<DataPoint> currentData = new List<DataPoint>();
 
         public struct DataPoint
         {
@@ -56,7 +58,9 @@ namespace RFExplorerSimpleClient
             CenterFreq.KeyDown += new KeyEventHandler(OnCenterFreqChanged);
             Span.KeyDown+= new KeyEventHandler(OnSpanChanged);
             freqSpan = Convert.ToDouble(Span.Text);
-            
+            ScanPlot.Series.Add("peakHold");
+
+
 
         }
 
@@ -91,36 +95,88 @@ namespace RFExplorerSimpleClient
             RFESweepData objData = m_objRFE.SweepData.GetData(m_objRFE.SweepData.Count - 1);
             if (objData != null)
             {
-                //UInt16 nPeak = objData.GetPeakStep();
-                //labelFrequency.Text = objData.GetFrequencyMHZ(nPeak).ToString("f3") + " MHZ";
-                //labelAmplitude.Text = objData.GetAmplitudeDBM(nPeak).ToString("f2") + " dBm";
+                UInt16 nPeak = objData.GetPeakStep();
+                labelFrequency.Text = objData.GetFrequencyMHZ(nPeak).ToString("f3") + " MHZ";
+                labelAmplitude.Text = objData.GetAmplitudeDBM(nPeak).ToString("f2") + " dBm";
 
 
-                ScanPlot.Series[0].Points.Clear();
-                List<DataPoint> ScanData = new List<DataPoint>();
-                for(ushort i = 0; i<= objData.TotalSteps - 1; i++)
+                for (ushort i = 0; i< objData.TotalSteps; i++)
                 {
                     DataPoint point = new DataPoint();
                     point.freq = objData.GetFrequencyMHZ(i);
                     point.amp = objData.GetAmplitudeDBM(i);
-                    ScanData.Add(point);
-                    ScanPlot.Series[0].Points.AddXY(point.freq,point.amp);
-                    
+
+                    if (currentData.Count < objData.TotalSteps)
+                    {
+                        currentData.Add(point);
+
+                    }
+                    else
+                    {
+                        currentData[i] = point;
+                    }
+
+                    if (peakHoldData.Count< objData.TotalSteps)
+                    {
+                        peakHoldData.Add(point);
+                    }
+                    else
+                    {
+                        if (point.amp > peakHoldData[i].amp)
+                        {
+                            peakHoldData[i] = point;
+                        }
+                    }
                 }
-                
+
+                for (ushort i =0; i < objData.TotalSteps;i++)
+                {
+
+                    if (ScanPlot.Series[0].Points.Count < currentData.Count)
+                    {
+                        ScanPlot.Series[0].Points.AddXY(currentData[i].freq,currentData[i].amp);
+                    }
+                    else
+                    {
+                        ScanPlot.Series[0].Points[i].SetValueXY(currentData[i].freq, currentData[i].amp);
+                    }
+                    if (ScanPlot.Series[1].Points.Count < peakHoldData.Count)
+                    {
+                        ScanPlot.Series[1].Points.AddXY(peakHoldData[i].freq, peakHoldData[i].amp);
+                    }
+                    else
+                    {
+                        ScanPlot.Series[1].Points[i].SetValueXY(peakHoldData[i].freq, peakHoldData[i].amp);
+                        
+                    }
+                }
+                ScanPlot.Refresh();
+
+
+
+
+
+
 
             }
         }
 
        private void OnCenterFreqChanged(object sender, KeyEventArgs e)
         {
-            
+
             if (e.KeyCode == Keys.Enter)
             {
                 double center = Convert.ToDouble(CenterFreq.Text);
                 m_objRFE.UpdateDeviceConfig(center - freqSpan / 2, center + freqSpan / 2);
+
+                currentData.Clear();
+                peakHoldData.Clear();
+                ScanPlot.Series[0].Points.Clear();
+                ScanPlot.Series[1].Points.Clear();
+                ScanPlot.Refresh();
+
             }
-            
+
         }
 
         private void OnSpanChanged(object sender, KeyEventArgs e)
@@ -136,9 +192,17 @@ namespace RFExplorerSimpleClient
                 {
                     freqSpan = 1d;
                 }
+                currentData.Clear();
+                peakHoldData.Clear();
+                ScanPlot.Series[0].Points.Clear();
+                ScanPlot.Series[1].Points.Clear();
+                ScanPlot.Refresh();
+
+                m_objRFE.UpdateDeviceConfig(Convert.ToDouble(CenterFreq.Text) - freqSpan / 2, Convert.ToDouble(CenterFreq.Text) + freqSpan / 2);
             }
+
         }
-       
+
         #endregion
 
         #region RF Explorer handling
