@@ -37,6 +37,7 @@ namespace RFExplorerSimpleClient
         string m_sRFEReceivedString = "";
         RFECommunicator m_objRFE;
         #endregion
+        private double freqSpan;
 
         #region Main Form handling
         public SimpleMainForm()
@@ -48,6 +49,11 @@ namespace RFExplorerSimpleClient
             m_objRFE.ReportInfoAddedEvent += new EventHandler(OnRFE_ReportLog);
             m_objRFE.ReceivedConfigurationDataEvent += new EventHandler(OnRFE_ReceivedConfigData);
             m_objRFE.UpdateDataEvent += new EventHandler(OnRFE_UpdateData);
+            CenterFreq.KeyDown += new KeyEventHandler(OnCenterFreqChanged);
+            Span.KeyDown+= new KeyEventHandler(OnSpanChanged);
+            freqSpan = Convert.ToDouble(Span.Text);
+            
+
         }
 
         private void SimpleMainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -84,6 +90,33 @@ namespace RFExplorerSimpleClient
 
                 labelFrequency.Text = objData.GetFrequencyMHZ(nPeak).ToString("f3") + " MHZ";
                 labelAmplitude.Text = objData.GetAmplitudeDBM(nPeak).ToString("f2") + " dBm";
+            }
+        }
+
+       private void OnCenterFreqChanged(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.Enter)
+            {
+                double center = Convert.ToDouble(CenterFreq.Text);
+                m_objRFE.UpdateDeviceConfig(center - freqSpan / 2, center + freqSpan / 2);
+            }
+            
+        }
+
+        private void OnSpanChanged(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (Span.Text != "" && Convert.ToDouble(Span.Text) > 0.9d)
+                {
+                    freqSpan = Convert.ToDouble(Span.Text);
+
+                }
+                else
+                {
+                    freqSpan = 1d;
+                }
             }
         }
 

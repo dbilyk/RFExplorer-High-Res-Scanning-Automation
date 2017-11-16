@@ -47,6 +47,9 @@ namespace RFExplorerSimpleClient
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelAmplitude = new System.Windows.Forms.Label();
             this.labelFrequency = new System.Windows.Forms.Label();
@@ -57,10 +60,14 @@ namespace RFExplorerSimpleClient
             this.btnConnectRFExplorer = new System.Windows.Forms.Button();
             this.btnDisconnectRFExplorer = new System.Windows.Forms.Button();
             this.comboBoxPortsRFExplorer = new System.Windows.Forms.ComboBox();
-            this.m_chkDebug = new System.Windows.Forms.CheckBox();
-            this.m_edRFEReportLog = new System.Windows.Forms.TextBox();
+            this.CenterFreq = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Span = new System.Windows.Forms.TextBox();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -68,7 +75,7 @@ namespace RFExplorerSimpleClient
             this.groupBox2.Controls.Add(this.labelAmplitude);
             this.groupBox2.Controls.Add(this.labelFrequency);
             this.groupBox2.Controls.Add(this.labelSweeps);
-            this.groupBox2.Location = new System.Drawing.Point(278, 13);
+            this.groupBox2.Location = new System.Drawing.Point(12, 126);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 108);
             this.groupBox2.TabIndex = 60;
@@ -171,35 +178,67 @@ namespace RFExplorerSimpleClient
             this.comboBoxPortsRFExplorer.Size = new System.Drawing.Size(82, 21);
             this.comboBoxPortsRFExplorer.TabIndex = 10;
             // 
-            // m_chkDebug
+            // CenterFreq
             // 
-            this.m_chkDebug.AutoSize = true;
-            this.m_chkDebug.Location = new System.Drawing.Point(12, 126);
-            this.m_chkDebug.Name = "m_chkDebug";
-            this.m_chkDebug.Size = new System.Drawing.Size(108, 17);
-            this.m_chkDebug.TabIndex = 61;
-            this.m_chkDebug.Text = "Show Debug info";
-            this.m_chkDebug.UseVisualStyleBackColor = true;
-            this.m_chkDebug.CheckedChanged += new System.EventHandler(this.m_chkDebug_CheckedChanged);
+            this.CenterFreq.Location = new System.Drawing.Point(12, 391);
+            this.CenterFreq.Name = "CenterFreq";
+            this.CenterFreq.Size = new System.Drawing.Size(100, 20);
+            this.CenterFreq.TabIndex = 63;
             // 
-            // m_edRFEReportLog
+            // label1
             // 
-            this.m_edRFEReportLog.BackColor = System.Drawing.Color.White;
-            this.m_edRFEReportLog.Location = new System.Drawing.Point(12, 149);
-            this.m_edRFEReportLog.Multiline = true;
-            this.m_edRFEReportLog.Name = "m_edRFEReportLog";
-            this.m_edRFEReportLog.ReadOnly = true;
-            this.m_edRFEReportLog.Size = new System.Drawing.Size(466, 201);
-            this.m_edRFEReportLog.TabIndex = 62;
-            this.m_edRFEReportLog.Visible = false;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 366);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.TabIndex = 64;
+            this.label1.Text = "Center Freq";
+            this.label1.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(130, 366);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(62, 13);
+            this.label2.TabIndex = 66;
+            this.label2.Text = "Center Freq";
+            this.label2.Visible = false;
+            // 
+            // Span
+            // 
+            this.Span.Location = new System.Drawing.Point(130, 391);
+            this.Span.Name = "Span";
+            this.Span.Size = new System.Drawing.Size(100, 20);
+            this.Span.TabIndex = 65;
+            this.Span.Text = "10";
+            // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(278, 13);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(649, 398);
+            this.chart1.TabIndex = 67;
+            this.chart1.Text = "chart1";
             // 
             // SimpleMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(492, 149);
-            this.Controls.Add(this.m_edRFEReportLog);
-            this.Controls.Add(this.m_chkDebug);
+            this.ClientSize = new System.Drawing.Size(939, 423);
+            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.Span);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CenterFreq);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SimpleMainForm";
@@ -210,6 +249,7 @@ namespace RFExplorerSimpleClient
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -227,8 +267,13 @@ namespace RFExplorerSimpleClient
         private System.Windows.Forms.Button btnConnectRFExplorer;
         private System.Windows.Forms.Button btnDisconnectRFExplorer;
         private System.Windows.Forms.ComboBox comboBoxPortsRFExplorer;
-        private System.Windows.Forms.CheckBox m_chkDebug;
-        private System.Windows.Forms.TextBox m_edRFEReportLog;
+        private System.Windows.Forms.TextBox CenterFreq;
+
+        
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox Span;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 
